@@ -1,0 +1,69 @@
+---
+# tasks file for roles/mtail
+
+- name: "Add service group {{ mtail_service_group }}"
+  group:
+    name: "{{ mtail_service_group }}"
+    gid: "{{ mtail_service_gid }}"
+    state: present
+    system: yes
+    non_unique: no
+
+- name: "Add service user {{ mtail_service_user }}"
+  user:
+    name: "{{ mtail_service_user }}"
+    comment: "system user for service {{ mtail_service_name }}"
+    uid: "{{ mtail_service_uid }}"
+    group: "{{ mtail_service_group }}"
+    shell: "/usr/sbin/nologin"
+    state: present
+    system: yes
+    createhome: no
+    non_unique: no
+    home: "{{ mtail_progs }}"
+
+- name: "Download and install mtail binary"
+  get_url:
+    url: "{{ mtail_binary_url }}"
+    dest: "{{ mtail_exec }}"
+    owner: "root"
+    group: "{{ mtail_service_group }}"
+    mode: 0o770
+    checksum: "{{ mtail_checksum }}"
+    validate_certs: yes
+  notify:
+    - "restart mtail"
+
+- name: "Grant {{ mtail_service_user }} read access to log files"
+  acl:
+    state: present
+    path: "{{ item }}"
+    entity: "{{ mtail_service_user }}"
+    etype: user
+    permissions: r
+  with_items: "{{ mtail_logs }}"
+  notify:
+    - "restart mtail"
+
+- name: "Install systemd unit file for aehostd-ph"
+  template:
+    src: "{{ mtail_service_name }}.service.j2"
+    dest: "/etc/systemd/system/{{ mtail_service_name }}.service"
+    owner: root
+    group: root
+    mode: 0o0644
+  notify:
+    - "restart mtail"
+  when: ansible_service_mgr == "systemd"
+  register: mtail_unit
+
+- name: "Make sure systemd unit files are reloaded"
+  systemd:
+    daemon_reload: yes
+  when: ansible_service_mgr == "systemd" and mtail_unit.changed
+
+- name: "Enable and start service {{ mtail_service_name }}"
+  service:
+    name: "{{ mtail_service_name }}"
+    state: started
+    enabled: yes

@@ -1,0 +1,50 @@
+#-----------------------------------------------------------------------
+# initiate:   systemctl enable {{ mtail_service_name }}.service
+# start:      systemctl start {{ mtail_service_name }}.service
+# get status: systemctl status {{ mtail_service_name }}.service
+#
+# {{ ansible_managed }}
+#-----------------------------------------------------------------------
+
+[Unit]
+Description={{ mtail_service_name }} - extracts metrics from logs
+Documentation=https://github.com/google/mtail/tree/master/docs
+Requires=local-fs.target network.target
+Before=nss-user-lookup.target
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+User={{ mtail_service_user }}
+Group={{ mtail_service_group }}
+ExecStart={{ mtail_exec }} {{ mtail_args | join(' ') }} -logs {{ mtail_logs | join(',') }}
+Restart=always
+StandardError=syslog
+# various hardening options
+CapabilityBoundingSet=
+AmbientCapabilities=
+LockPersonality=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=full
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+NoNewPrivileges=yes
+MountFlags=private
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+KeyringMode=private
+SystemCallArchitectures=native
+SystemCallFilter=~ @clock @cpu-emulation @debug @keyring @module @mount @raw-io @reboot @swap @obsolete @chown @timer @privileged
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+{% if mtail_apparmor_enabled %}
+AppArmorProfile={{ mtail_apparmor_profile }}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

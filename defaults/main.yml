@@ -1,0 +1,47 @@
+---
+# defaults file for roles/mtail
+
+# where to download compiled mtail binary
+mtail_binary_url: "https://github.com/google/mtail/releases/download/v3.0.0-rc34/mtail_v3.0.0-rc34_linux_amd64"
+
+# checksum argument to be used with ansible's get_url
+# note: must match file content downloaded from URL given with mtail_binary_url
+mtail_checksum: "sha256:80A48FF6E983186D28589CD5AB21139B194084F5406341B169E2CA75B4D2174D"
+
+# where to install the mtail executable
+mtail_exec: "/usr/local/sbin/mtail"
+
+# name of service (e.g. systemd unit)
+mtail_service_name: "mtail"
+
+# system user and group to run mtail as
+mtail_service_user: "mtail"
+mtail_service_uid: "3903"
+mtail_service_group: "{{ mtail_service_user }}"
+mtail_service_gid: "{{ mtail_service_uid }}"
+
+# TCP port used for the HTTP server
+mtail_port: "3903"
+
+# log files to monitor
+mtail_logs:
+  - "/var/log/messages"
+
+# list of Jinja2 templates files to install as mtail programs
+mtail_programs: []
+  
+# directory path where mtail programs are located
+mtail_progs: "/etc/mtail"
+
+# all mtail arguments except -logs
+mtail_args:
+  - "-port {{ mtail_port }}"
+  - "-logtostderr"
+  - "-progs {{ mtail_progs }}"
+  - "-syslog_use_current_year"
+
+# whether AppArmor profile should be created
+mtail_apparmor_enabled: False
+
+# AppArmor profile name
+mtail_apparmor_profile: "{{ mtail_exec|replace('/', '.') }}"

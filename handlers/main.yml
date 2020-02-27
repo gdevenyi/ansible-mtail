@@ -1,0 +1,9 @@
+---
+# handlers file for roles/mtail
+
+- name: "restart mtail"
+  listen:
+    - "restart mtail"
+  service:
+    name: "{{ mtail_service_name }}"
+    state: restarted
