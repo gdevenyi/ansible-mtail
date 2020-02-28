@@ -15,6 +15,7 @@ profile {{ mtail_exec }} {
   /etc/passwd r,
 
   @{PROC}/sys/net/core/somaxconn r,
+  @{PROC}/@{pid}/{stat,fd,limit} r,
 
   # allow to write the log file
   {{ mtail_logdir }} rw,
