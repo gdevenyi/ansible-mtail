@@ -32,7 +32,17 @@
     checksum: "{{ mtail_checksum }}"
     validate_certs: yes
   notify:
-    - "restart mtail"
+    - "restart {{ mtail_service_name }}"
+
+- name: "Create log directory"
+  file:
+    path: "{{ mtail_logdir }}"
+    state: directory
+    owner: "{{ mtail_service_user }}"
+    group: root
+    mode: 0o0750
+  notify:
+    - "restart {{ mtail_service_name }}"
 
 - name: "Grant {{ mtail_service_user }} read access to log files"
   acl:
@@ -53,20 +63,9 @@
     group: root
     mode: 0o0644
   notify:
-    - "restart mtail"
+    - "restart {{ mtail_service_name }}"
   when: ansible_service_mgr == "systemd"
   register: mtail_unit
-
-- name: "Make sure systemd unit files are reloaded"
-  systemd:
-    daemon_reload: yes
-  when: ansible_service_mgr == "systemd" and mtail_unit.changed
-
-- name: "Enable and start service {{ mtail_service_name }}"
-  service:
-    name: "{{ mtail_service_name }}"
-    state: started
-    enabled: yes
 
 - name: "Install AppArmor profile"
   template:
@@ -79,3 +78,14 @@
     - "restart apparmor"
     - "restart {{ mtail_service_name }}"
   when: mtail_apparmor_enabled == True
+
+- name: "Make sure systemd unit files are reloaded"
+  systemd:
+    daemon_reload: yes
+  when: ansible_service_mgr == "systemd" and mtail_unit.changed
+
+- name: "Enable and start service {{ mtail_service_name }}"
+  service:
+    name: "{{ mtail_service_name }}"
+    state: started
+    enabled: yes

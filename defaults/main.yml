@@ -15,10 +15,13 @@ mtail_exec: "/usr/local/sbin/mtail"
 mtail_service_name: "mtail"
 
 # system user and group to run mtail as
-mtail_service_user: "mtail"
+mtail_service_user: "{{ mtail_service_name }}"
 mtail_service_uid: "3903"
 mtail_service_group: "{{ mtail_service_user }}"
 mtail_service_gid: "{{ mtail_service_uid }}"
+
+# where to write log messages
+mtail_logdir: "/var/log/{{ mtail_service_name }}"
 
 # TCP port used for the HTTP server
 mtail_port: "3903"
@@ -36,7 +39,7 @@ mtail_progs: "/etc/mtail"
 # all mtail arguments except -logs
 mtail_args:
   - "-port {{ mtail_port }}"
-  - "-logtostderr"
+  - "-logdir {{ mtail_logdir }}"
   - "-progs {{ mtail_progs }}"
   - "-syslog_use_current_year"
 

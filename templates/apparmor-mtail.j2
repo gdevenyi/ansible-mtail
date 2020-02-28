@@ -16,6 +16,10 @@ profile {{ mtail_exec }} {
 
   @{PROC}/sys/net/core/somaxconn r,
 
+  # allow to write the log file
+  {{ mtail_logdir }} rw,
+  {{ mtail_logdir }}/mtail* rw,
+
   # grant read access to mtail programs
   {{ mtail_progs }}/ r,
   {{ mtail_progs }}/*.mtail r,
