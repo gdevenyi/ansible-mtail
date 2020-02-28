@@ -39,7 +39,7 @@ mtail_progs: "/etc/mtail"
 # all mtail arguments except -logs
 mtail_args:
   - "-port {{ mtail_port }}"
-  - "-logdir {{ mtail_logdir }}"
+  - "-log_dir {{ mtail_logdir }}"
   - "-progs {{ mtail_progs }}"
   - "-syslog_use_current_year"
 
