@@ -41,7 +41,7 @@ mtail_args:
   - "-syslog_use_current_year"
 
 # whether AppArmor profile should be created
-mtail_apparmor_enabled: False
+mtail_apparmor_enabled: "{{ ansible_apparmor.status == 'enabled' }}"
 
 # AppArmor profile name
-mtail_apparmor_profile: "{{ mtail_exec|replace('/', '.') }}"
+mtail_apparmor_profile: "{{ mtail_exec[1:] | replace('/', '.') }}"

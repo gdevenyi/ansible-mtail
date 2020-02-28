@@ -42,9 +42,5 @@ SystemCallArchitectures=native
 SystemCallFilter=~ @clock @cpu-emulation @debug @keyring @module @mount @raw-io @reboot @swap @obsolete @chown @timer @privileged
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 
-{% if mtail_apparmor_enabled %}
-AppArmorProfile={{ mtail_apparmor_profile }}
-{% endif %}
-
 [Install]
 WantedBy=multi-user.target

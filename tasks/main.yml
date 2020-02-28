@@ -67,3 +67,15 @@
     name: "{{ mtail_service_name }}"
     state: started
     enabled: yes
+
+- name: "Install AppArmor profile"
+  template:
+    src: "apparmor-mtail.j2"
+    dest: "/etc/apparmor.d/{{ mtail_apparmor_profile }}"
+    owner: root
+    group: root
+    mode: 0o0644
+  notify:
+    - "restart apparmor"
+    - "restart {{ mtail_service_name }}"
+  when: mtail_apparmor_enabled == True

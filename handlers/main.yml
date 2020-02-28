@@ -1,6 +1,13 @@
 ---
 # handlers file for roles/mtail
 
+- name: "reload apparmor"
+  listen:
+    - "restart apparmor"
+  service:
+    name: "apparmor"
+    state: restarted
+
 - name: "restart mtail"
   listen:
     - "restart mtail"
