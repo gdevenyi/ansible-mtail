@@ -27,10 +27,20 @@
     url: "{{ mtail_binary_url }}"
     dest: "{{ mtail_exec }}"
     owner: "root"
-    group: "{{ mtail_service_group }}"
-    mode: 0o770
+    group: "root"
+    mode: 0o777
     checksum: "{{ mtail_checksum }}"
     validate_certs: yes
+  notify:
+    - "restart {{ mtail_service_name }}"
+
+- name: "Create progs directory"
+  file:
+    path: "{{ mtail_progs }}"
+    state: directory
+    owner: "root"
+    group: "{{ mtail_service_group }}"
+    mode: 0o0750
   notify:
     - "restart {{ mtail_service_name }}"
 
@@ -55,7 +65,7 @@
   notify:
     - "restart mtail"
 
-- name: "Install systemd unit file for aehostd-ph"
+- name: "Install systemd unit file for mtail"
   template:
     src: "{{ mtail_service_name }}.service.j2"
     dest: "/etc/systemd/system/{{ mtail_service_name }}.service"
