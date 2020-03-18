@@ -15,7 +15,9 @@ profile {{ mtail_exec }} {
   /etc/passwd r,
 
   @{PROC}/sys/net/core/somaxconn r,
-  @{PROC}/@{pid}/{stat,fd,limit} r,
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/{stat,limits} r,
+  @{sys}/kernel/mm/transparent_hugepage/hpage_pmd_size r,
 
   # allow to write the log file
   {{ mtail_logdir }} rw,
