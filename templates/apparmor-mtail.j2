@@ -19,9 +19,11 @@ profile {{ mtail_exec }} {
   @{PROC}/@{pid}/{stat,limits} r,
   @{sys}/kernel/mm/transparent_hugepage/hpage_pmd_size r,
 
+{% if mtail_logdir %}
   # allow to write the log file
   {{ mtail_logdir }} rw,
   {{ mtail_logdir }}/mtail* rw,
+{% endif %}
 
   # grant read access to mtail programs
   {{ mtail_progs }}/ r,

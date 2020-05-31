@@ -51,6 +51,7 @@
     owner: "{{ mtail_service_user }}"
     group: root
     mode: 0o0750
+  when: mtail_logdir|bool
   notify:
     - "restart {{ mtail_service_name }}"
 
