@@ -24,9 +24,6 @@ mtail_service_gid: "{{ mtail_service_uid }}"
 #mtail_logdir: "/var/log/{{ mtail_service_name }}"
 mtail_logdir: ""
 
-# where to write log messages
-mtail_log_arg: "{{ '-log_dir '+mtail_logdir if mtail_logdir else '-logtostderr' }}"
-
 # TCP port used for the HTTP server
 mtail_port: "3903"
 
@@ -45,7 +42,7 @@ mtail_args:
   - "-port {{ mtail_port }}"
   - "-progs {{ mtail_progs }}"
   - "-syslog_use_current_year"
-  - "{{ mtail_log_arg }}"
+  - "{{ '-log_dir '+mtail_logdir if mtail_logdir else '-logtostderr' }}"
 
 # whether AppArmor profile should be created
 mtail_apparmor_enabled: "{{ ansible_apparmor.status == 'enabled' }}"
