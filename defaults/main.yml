@@ -2,11 +2,11 @@
 # defaults file for roles/mtail
 
 # where to download compiled mtail binary
-mtail_binary_url: "https://github.com/google/mtail/releases/download/v3.0.0-rc36/mtail_v3.0.0-rc36_linux_amd64"
+mtail_binary_url: "https://github.com/google/mtail/releases/download/v3.0.0-rc38/mtail_v3.0.0-rc38_linux_amd64"
 
 # checksum argument to be used with ansible's get_url
 # note: must match file content downloaded from URL given with mtail_binary_url
-mtail_checksum: "sha256:a30af629885ee285a54cf9e9984853a313a55a699a8b23d06b583e6417337797"
+mtail_checksum: "sha256:93090a6a924a2beb6d767972c55b6e6ec642addda1918a741b843a0a1473b981"
 
 # where to install the mtail executable
 mtail_exec: "/usr/local/sbin/mtail"
