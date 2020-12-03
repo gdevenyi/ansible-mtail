@@ -3,7 +3,7 @@
 
 #include <tunables/global>
 
-profile {{ mtail_exec }} {
+profile {{ mtail_service_name }} {{ mtail_exec }} flags=(attach_disconnected) {
 
   #include <abstractions/base>
 
