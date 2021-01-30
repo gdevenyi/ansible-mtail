@@ -19,7 +19,6 @@ User={{ mtail_service_user }}
 Group={{ mtail_service_group }}
 ExecStart={{ mtail_exec }} {{ mtail_args | join(' ') }} -logs {{ mtail_logs | join(',') }}
 Restart=always
-StandardError=syslog
 # various hardening options
 CapabilityBoundingSet=
 AmbientCapabilities=
