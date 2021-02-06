@@ -22,15 +22,28 @@
     non_unique: no
     home: "{{ mtail_progs }}"
 
-- name: "Download and install mtail binary"
+- name: "Download mtail archive to controller"
   get_url:
-    url: "{{ mtail_binary_url }}"
-    dest: "{{ mtail_exec }}"
+    url: "{{ mtail_archive_url }}"
+    dest: "files/{{ mtail_archive_url|basename }}"
+    checksum: "{{ mtail_checksum }}"
+    validate_certs: yes
+  delegate_to: 127.0.0.1
+  become: no
+  register: mtail_download
+
+- name: "Extract to mtail executable"
+  unarchive:
+    remote_src: no
+    src: "{{ mtail_archive_url|basename }}"
+    dest: "{{ mtail_exec|dirname }}"
+    creates: "{{ '' if mtail_download.changed else mtail_exec }}"
     owner: "root"
     group: "root"
     mode: 0o777
-    checksum: "{{ mtail_checksum }}"
-    validate_certs: yes
+    exclude:
+      - LICENSE
+      - README.md
   notify:
     - "restart {{ mtail_service_name }}"
 
