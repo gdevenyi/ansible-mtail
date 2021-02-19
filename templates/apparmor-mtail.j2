@@ -25,6 +25,9 @@ profile {{ mtail_service_name }} {{ mtail_exec }} flags=(attach_disconnected) {
   {{ mtail_logdir }}/mtail* rw,
 {% endif %}
 
+  # grant read access to mtail executable
+  {{ mtail_exec }} r,
+  
   # grant read access to mtail programs
   {{ mtail_progs }}/ r,
   {{ mtail_progs }}/*.mtail r,
