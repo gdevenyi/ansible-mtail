@@ -1,0 +1,12 @@
+---
+
+# install mtail OS package
+
+- name: "Install mtail package"
+  zypper:
+    name: mtail
+    state: latest
+    disable_recommends: yes
+    type: package
+  notify:
+    - "restart {{ mtail_service_name }}"

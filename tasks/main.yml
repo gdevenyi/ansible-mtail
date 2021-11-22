@@ -22,37 +22,8 @@
     non_unique: no
     home: "{{ mtail_progs }}"
 
-- name: "Download mtail archive to controller"
-  get_url:
-    url: "{{ mtail_archive_url }}"
-    dest: "{{ playbook_dir }}/files/{{ mtail_archive_url|basename }}"
-    checksum: "{{ mtail_checksum }}"
-    validate_certs: yes
-  become: no
-  delegate_to: 127.0.0.1
-
-- name: "Extract mtail executable on controller"
-  unarchive:
-    remote_src: yes
-    src: "{{ playbook_dir }}/files/{{ mtail_archive_url|basename }}"
-    dest: "{{ playbook_dir }}/files/"
-    extra_opts:
-      - "--gzip"
-    exclude:
-      - LICENSE
-      - README.md
-  become: no
-  delegate_to: 127.0.0.1
-
-- name: "Copy mtail executable to {{ mtail_exec }}"
-  copy:
-    src: "{{ playbook_dir }}/files/{{ mtail_exec|basename }}"
-    dest: "{{ mtail_exec }}"
-    owner: "root"
-    group: "root"
-    mode: 0o777
-  notify:
-    - "restart {{ mtail_service_name }}"
+- name: "Install mtail"
+  include_tasks: "install_{{ mtail_install_method.get(ansible_lsb.id, 'download') }}.yml"
 
 - name: "Create progs directory"
   file:
