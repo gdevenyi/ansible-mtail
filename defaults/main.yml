@@ -11,6 +11,9 @@ mtail_checksum: "sha256:f9a4ca296713f9c6ed00ae827ef88cadfefb17054b66dfc8ba4895fb
 # where to install the mtail executable
 mtail_exec: "{{ mtail_pkg_exec.get(ansible_lsb.id, '/usr/local/sbin/mtail') }}"
 
+# method used to install mtail
+mtail_install_method: "{{ mtail_install_method_defaults.get(ansible_lsb.id, 'download') }}"
+
 # name of service (e.g. systemd unit)
 mtail_service_name: "mtail"
 

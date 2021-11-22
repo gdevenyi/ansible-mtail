@@ -1,7 +1,7 @@
 ---
 # vars file for roles/mtail
 
-mtail_install_method:
+mtail_install_method_defaults:
   SUSE: 'zypper'
   openSUSE: 'zypper'
 

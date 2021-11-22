@@ -23,7 +23,7 @@
     home: "{{ mtail_progs }}"
 
 - name: "Install mtail"
-  include_tasks: "install_{{ mtail_install_method.get(ansible_lsb.id, 'download') }}.yml"
+  include_tasks: "install_{{ mtail_install_method }}.yml"
 
 - name: "Create progs directory"
   file:
