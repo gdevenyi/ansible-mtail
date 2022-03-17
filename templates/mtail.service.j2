@@ -26,7 +26,10 @@ LockPersonality=yes
 PrivateTmp=yes
 PrivateUsers=yes
 PrivateDevices=yes
-ProtectSystem=full
+ProtectSystem=strict
+{% if mtail_logdir %}
+ReadWritePaths={{ mtail_logdir }}
+{% endif %}
 ProtectHome=yes
 ProtectHostname=yes
 ProtectClock=yes
