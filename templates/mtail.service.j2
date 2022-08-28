@@ -47,7 +47,7 @@ RestrictNamespaces=yes
 RestrictSUIDSGID=yes
 KeyringMode=private
 SystemCallArchitectures=native
-SystemCallFilter=~ @clock @cpu-emulation @debug @keyring @module @mount @raw-io @reboot @swap @obsolete @chown @timer @privileged ioprio_set mbind migrate_pages move_pages nice sched_setaffinity sched_setattr sched_setparam sched_setscheduler set_mempolicy setpriority setrlimit splice
+SystemCallFilter=~ @clock @cpu-emulation @debug @keyring @module @mount @raw-io @reboot @swap @obsolete @chown @timer @privileged ioprio_set mbind migrate_pages move_pages nice sched_setaffinity sched_setattr sched_setparam sched_setscheduler set_mempolicy setpriority splice
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 {% if mtail_apparmor_enabled %}
 AppArmorProfile={{ mtail_service_name }}
